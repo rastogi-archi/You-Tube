@@ -18,8 +18,8 @@ import { ToggleSidebarContext } from '../context/ToggleSidebar'
 const SideBar = () => {
     const toggleState = useContext(ToggleSidebarContext);
     return (
-        <div className={`ml-3 mt-4 mb-5 font-medium w-[40%] sm:w-[20%] ${toggleState.sidebar?"":"small-sidebar"}`}>
-            <div className='flex flex-col gap-3'>
+        <div className={`ml-3 mt-4 mb-5 font-medium ${toggleState.sidebar?"":"small-sidebar"} hidden sm:block`}>
+            <div className='flex flex-col gap-3 sm:w-40'>
                 <div className='flex items-center gap-2'>
                     <img src={home} alt="" className='h-5 sm:h-6' />
                     <p className='text-xs sm:text-sm'>Home</p>
