@@ -16,9 +16,9 @@ const Feed = ({ category }) => {
 
   return (
     <div className='flex flex-wrap gap-4 justify-evenly mt-6 sm:pl-1'>
-      {data.map((item) => {
+      {data.map((item,index) => {
         return (
-          <Link Link to={`video/${item.snippet.categoryId}/${item.id}`} className='w-72 mb-5' >
+          <Link key={index} Link to={`video/${item.snippet.categoryId}/${item.id}`} className='w-72 mb-5' >
             <img src={item.snippet.thumbnails.medium.url} alt="" className='h-44 rounded-md' />
             <h2 className='text-sm font-semibold'>{item.snippet.title}</h2>
             <h3 className='text-gray-600 text-xs font-semibold mt-1'>{item.snippet.channelTitle}</h3>
