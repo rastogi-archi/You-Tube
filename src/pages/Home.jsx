@@ -1,13 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import SideBar from '../components/SideBar'
 import Feed from '../components/Feed'
 
 const Home = () => {
+const [category, setCategory] = useState(0);
+
   return (
     <div className='flex'>
-      <SideBar />
+      <SideBar category={category} setCategory={setCategory}/>
       <div className='bg-[#f9f9f9]'>
-        <Feed />
+        <Feed category={category}/>
       </div>
     </div>
   )

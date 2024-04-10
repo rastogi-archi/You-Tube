@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import video1 from '/video.mp4';
 import like from '/like.png';
 import dislike from '/dislike.png';
@@ -6,15 +6,28 @@ import share from '/share.png';
 import save from '/save.png';
 import jack from '/jack.png';
 import user_profile from '/user_profile.jpg';
+import {API_KEY, value_converter} from '../data'
+import moment from 'moment'
 
-const PlayVideo = () => {
+const PlayVideo = ({ videoId }) => {
+    const [apiData,setApiData] = useState(null);
+
+    const fetchVideoData = async () => {
+        // fetching videos data
+        const videDetailsUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${API_KEY}`
+        await fetch(videDetailsUrl).then(res => res.json()).then(data => setApiData(data.items[0]))
+    }
+    useEffect(() => {
+        fetchVideoData();
+    },[])
+
     return (
         <div className='xl:w-[80%]'>
-            <video src={video1} alt="" controls autoPlay className='w-full rounded-lg' />
-            <h2 className='font-bold mt-2 text-lg'>Best YouTube Channel To Learn Web Development</h2>
+            <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} className='w-full rounded-lg h-72 md:h-80 xl:h-[37vw]' frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <h2 className='font-bold mt-2 text-lg'>{apiData?apiData.snippet.title:"Title Here"}</h2>
             <div className='flex justify-between'>
-                <p className='text-[10px] text-gray-700 ml-2 mt-1'>1525 Views &bull; 2 days ago</p>
-                <div className='flex gap-2 text-gray-700 text-[10px] mr-2'>
+                <p className='text-[10px] text-gray-700 mt-1 sm:text-xs'>{apiData?value_converter(apiData.statistics.viewCount):"16K"} Views &bull; {apiData?moment(apiData.snippet.publishedAt).fromNow():""} </p>
+                <div className='flex gap-2 text-gray-700 text-[10px] mr-2 sm:text-xs'>
                     <p className='flex justify-center items-center gap-1'><img src={like} alt="" className='h-4' />125</p>
                     <p className='flex justify-center items-center gap-1'><img src={dislike} alt="" className='h-4' />2</p>
                     <p className='flex justify-center items-center gap-1'><img src={share} alt="" className='h-4' />Share</p>
@@ -26,11 +39,11 @@ const PlayVideo = () => {
                 <div className='flex justify-between'>
                     <div className='flex gap-2 items-center'>
 
-                    <img src={jack} alt="" className='rounded-full h-8' />
-                    <div>
-                        <h3 className='font-semibold text-sm'>GreatStack</h3>
-                        <p className='text-xs text-gray-600'>1M subscribers</p>
-                    </div>
+                        <img src={jack} alt="" className='rounded-full h-8' />
+                        <div>
+                            <h3 className='font-semibold text-sm'>GreatStack</h3>
+                            <p className='text-xs text-gray-600'>1M subscribers</p>
+                        </div>
                     </div>
                     <button className='bg-red-500 text-white text-xs w-20 h-6 rounded-3xl'>Subscribe</button>
                 </div>
