@@ -1,46 +1,31 @@
-import React from 'react'
-import thumbnail1 from '/thumbnail1.png'
-import thumbnail2 from '/thumbnail2.png'
-import thumbnail3 from '/thumbnail3.png'
-import thumbnail4 from '/thumbnail4.png'
-import thumbnail5 from '/thumbnail5.png'
-import thumbnail6 from '/thumbnail6.png'
-import thumbnail7 from '/thumbnail7.png'
-import thumbnail8 from '/thumbnail8.png'
+import React, { useEffect, useState } from 'react'
+import { API_KEY, value_converter} from '../data'
+import { Link } from 'react-router-dom';
 
-const Recommended = () => {
+const Recommended = ({ categoryId }) => {
+
+    const [apiData, setApiData] = useState([]);
+
+    const fetchData = async () => {
+        const relatedVideoUrl = ` https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=10&regionCode=US&videoCategoryId=${categoryId}&key=${API_KEY}`;
+        await fetch(relatedVideoUrl).then(res => res.json()).then(data => setApiData(data.items))
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
     return (
         <div>
-            <div className='mb-2'>
-                <img src={thumbnail1} alt="" className='rounded-lg xl:h-36' />
-                <h4 className='font-bold text-sm'>Best channel that help you to be a web developer</h4>
-                <p className='text-gray-600'>GreatStack</p>
-                <p className='text-xs'>199K Views</p>
-            </div>
-            <div className='mb-2'>
-                <img src={thumbnail2} alt="" className='rounded-lg xl:h-36' />
-                <h4 className='font-bold text-sm'>Best channel that help you to be a web developer</h4>
-                <p className='text-gray-600'>GreatStack</p>
-                <p className='text-xs'>199K Views</p>
-            </div>
-            <div className='mb-2'>
-                <img src={thumbnail3} alt="" className='rounded-lg xl:h-36'/>
-                <h4 className='font-bold text-sm'>Best channel that help you to be a web developer</h4>
-                <p className='text-gray-600'>GreatStack</p>
-                <p className='text-xs'>199K Views</p>
-            </div>
-            <div className='mb-2'>
-                <img src={thumbnail4} alt="" className='rounded-lg xl:h-36'/>
-                <h4 className='font-bold text-sm'>Best channel that help you to be a web developer</h4>
-                <p className='text-gray-600'>GreatStack</p>
-                <p className='text-xs'>199K Views</p>
-            </div>
-            <div className='mb-2'>
-                <img src={thumbnail5} alt="" className='rounded-lg xl:h-36'/>
-                <h4 className='font-bold text-sm'>Best channel that help you to be a web developer</h4>
-                <p className='text-gray-600'>GreatStack</p>
-                <p className='text-xs'>199K Views</p>
-            </div>
+            {apiData.map((item, index) => {
+                return (
+                    <Link to={`/video/${item.snippet.categoryId}/${item.id}`} key={index} className='flex flex-col sm:w-[160px] xl:w-[300px] ml-[-5px] sm:ml-0'>
+                        <img src={item.snippet.thumbnails.medium.url} alt="" className='rounded-lg xl:h-40' />
+                        <h4 className='font-bold text-sm'>{item.snippet.title}</h4>
+                        <p className='text-gray-600'>{item.snippet.channelTitle}</p>
+                        <p className='text-xs mb-5'>{value_converter(item.statistics.viewCount)} Views</p>
+                    </Link>
+                )
+            })}
         </div>
     )
 }

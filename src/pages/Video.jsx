@@ -8,7 +8,7 @@ const Video = () => {
   return (
     <div className='p-4 sm:flex gap-5'>
       <PlayVideo videoId={videoId}/>
-      <Recommended/>
+      <Recommended categoryId={categoryId}/>
     </div>
   )
 }

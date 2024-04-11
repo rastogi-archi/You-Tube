@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,} from 'react'
+import {useParams} from 'react-router-dom'
 import like from '/like.png';
 import dislike from '/dislike.png';
 import share from '/share.png';
 import save from '/save.png';
-import user_profile from '/user_profile.jpg';
 import { API_KEY, value_converter } from '../data'
 import moment from 'moment'
 
-const PlayVideo = ({ videoId }) => {
+const PlayVideo = () => {
+    const {videoId} = useParams();
+
     const [apiData, setApiData] = useState(null);
     const [channelData, setChannelData] = useState(null);
     const [commentData, setCommentData] = useState([]);
@@ -30,17 +32,17 @@ const PlayVideo = ({ videoId }) => {
 
     useEffect(() => {
         fetchVideoData();
-    }, [])
+    }, [videoId])
 
     useEffect(() => {
         fetchOtherData();
     }, [apiData])
 
     return (
-        <div className='xl:w-[80%]'>
-            <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} className='w-full rounded-lg h-72 md:h-80 xl:h-[37vw]' frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div className='md:w-[100%] xl:w-[80%]'>
+            <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} className='w-full sm:w-[100%] md:w-full xl:w-full rounded-lg h-72 md:h-96 xl:h-[32vw]' frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <h2 className='font-bold mt-2 text-lg'>{apiData ? apiData.snippet.title : "Title Here"}</h2>
-            <div className='flex justify-between'>
+            <div className='flex justify-between gap-2'>
                 <p className='text-[10px] text-gray-700 mt-1 sm:text-xs'>{apiData ? value_converter(apiData.statistics.viewCount) : "16K"} Views &bull; {apiData ? moment(apiData.snippet.publishedAt).fromNow() : ""} </p>
                 <div className='flex gap-2 text-gray-700 text-[10px] mr-2 sm:text-xs'>
                     <p className='flex justify-center items-center gap-1'><img src={like} alt="" className='h-4' />{apiData ? value_converter(apiData.statistics.likeCount) : 155}</p>
