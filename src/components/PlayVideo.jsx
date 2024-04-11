@@ -39,7 +39,7 @@ const PlayVideo = () => {
     }, [apiData])
 
     return (
-        <div className='md:w-[100%] xl:w-[80%]'>
+        <div className='md:w-[100%] xl:w-[80%]' onClick={window.scrollTo(0,0)}>
             <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} className='w-full sm:w-[100%] md:w-full xl:w-full rounded-lg h-72 md:h-96 xl:h-[32vw]' frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <h2 className='font-bold mt-2 text-lg'>{apiData ? apiData.snippet.title : "Title Here"}</h2>
             <div className='flex justify-between gap-2'>
